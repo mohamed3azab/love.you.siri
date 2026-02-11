@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قصتنا | Our Story</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* * =========================================
+         * VARIABLES & RESET
+         * =========================================
+         */
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #590d22;
+            --bg-dark: #10002b;
+            --bg-gradient: linear-granted(135deg, #10002b 0%, #240046 50%, #3c096c 100%);
+            --gold: #ffd700;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --font-main: 'Tajawal', sans-serif;
+            --transition-speed: 0.6s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: radial-gradient(circle at center, #240046, #10002b);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        /* * =========================================
+         * ANIMATIONS & UTILS
+         * =========================================
+         */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            will-change: opacity, visibility;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .gold-text {
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* * =========================================
+         * LOGIN SCREEN (GATE)
+         * =========================================
+         */
+        #login-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: var(--glass-border);
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .login-box h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 1rem;
+            font-family: var(--font-main);
+            text-align: center;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .login-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .login-btn {
+            background: linear-gradient(45deg, var(--primary-color), #c9184a);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .error-msg {
+            color: #ff4d6d;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            height: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* * =========================================
+         * MAIN CONTENT
+         * =========================================
+         */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?q=80&w=1920&auto=format&fit=crop');
+            /* صورة خلفية Hero */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            /* Parallax Effect */
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            /* تعتيم الخلفية */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            background: linear-gradient(to right, #fff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* Glass Cards Styling */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 77, 109, 0.5);
+        }
+
+        /* Why You Section */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .reason-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Promises Section */
+        .promises-list {
+            list-style: none;
+            text-align: center;
+        }
+
+        .promises-list li {
+            font-size: 1.3rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border-right: 4px solid var(--primary-color);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1920');
+            background-size: cover;
+            background-attachment: fixed;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        blockquote {
+            font-size: 1.8rem;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.6;
+            color: #fff;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            height: 600px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Video Section */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .video-grid video {
+            width: 100%;
+            max-width: 350px;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+            transition: 0.3s;
+        }
+
+        .video-grid video:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        }
+
+
+        /* Audio Player Custom */
+        .audio-player {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Ending */
+        .ending {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(to top, #000, transparent);
+        }
+
+        .ending h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Floating Hearts Animation Background */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -100px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 77, 109, 0.4);
+            transform: rotate(45deg);
+            animation: floatUp 10s linear infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes floatUp {
+            0% {
+                bottom: -100px;
+                opacity: 1;
+                transform: translateX(0) rotate(45deg);
+            }
+
+            100% {
+                bottom: 100vh;
+                opacity: 0;
+                transform: translateX(100px) rotate(45deg);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .login-box {
+                padding: 2rem;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="D:\love you sara\photo\music\Albumaty.Com_amrw_gabr_hbyby_da_-_klh_kaly_ashmana_hw.mp3"
+            type="audio/mpeg">
+    </audio>
+
+    <div class="hearts-bg" id="hearts-container"></div>
+
+    <div id="login-gate">
+        <div class="login-box">
+            <h2>🔐 أدخلي تاريخ بداية علاقتنا ❤️</h2>
+            <p style="margin-bottom: 15px; font-size: 0.9rem; opacity: 0.8;">(YYYY-MM-DD)</p>
+            <input type="date" id="password-input" class="login-input">
+            <button class="login-btn" onclick="checkPassword()">ادخلي الي قلبي❤️</button>
+            <div id="error-msg" class="error-msg">التاريخ غلط.. حاولي تفتكري ياهانم هااا؟ ❤️!</div>
+        </div>
+    </div>
+
+    <main id="main-content" class="hidden">
+
+        <section class="hero">
+            <div class="container hero-content fade-in-section">
+                <h1>أنتي مش حكاية حب… <br> أنتي الحاجة الوحيدة اللي خلت للحياة معنى وخلتها جميله ❤️.</h1>
+                <p>اهلا بيكي في قلبي ❤️</p>
+            </div>
+        </section>
+
+        <section id="story">
+            <div class="container">
+                <div class="glass-card fade-in-section" style="text-align: center;">
+                    <h2 class="gold-text">بداية قصتنا❤️</h2>
+                    <br>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        "اليوم اللي قابلتك فيه مش مجرد تاريخ وبس ياساره… ده اليوم اللي كل حاجة بعده بقت مختلفة وبقا ليها
+                        طعم ومعني وحلوه ❤️."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="story">
+            <div class="container">
+                <div class="glass-card fade-in-section" style="text-align: center;">
+                    <h2 class="gold-text">عايز اقولك حاجه!❤️</h2>
+                    <br>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        " انا اول مره احب وكمان اكون خايف علي حد اكتر من نفسي انا مكنتش اعرف ان ليكي جوايا كل الحب دا
+                        كلو وفعلا اكتشفت انك اهم حاجه في حياتي يابنتي والله ❤️."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="reasons">
+            <div class="container">
+                <h2 class="gold-text fade-in-section" style="text-align: center;">ليه أنت❤️؟</h2>
+                <div class="reasons-grid">
+                    <div class="glass-card reason-card fade-in-section">
+                        <h3>لأنك الأمان</h3>
+                        <p>في وجودك كل مخاوفي بتختفي وبحس ان اقوي واحد في الدنيا❤️.</p>
+                    </div>
+                    <div class="glass-card reason-card fade-in-section" style="transition-delay: 0.2s;">
+                        <h3>لأن صوتك بيهدّي قلبي</h3>
+                        <p> صوتك قادر يمحي تعب يوم كامل في لحظة واحده ❤️.</p>
+                    </div>
+                    <div class="glass-card reason-card fade-in-section" style="transition-delay: 0.4s;">
+                        <h3>لأنك الحياة</h3>
+                        <p>من غيرك الأيام باهتةووحشة اوي ومعاكي كل لحظة ليها طعم وبتكون اسعد ايامي ❤️.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="promises">
+            <div class="container">
+                <div class="glass-card fade-in-section">
+                    <h2 class="gold-text" style="text-align: center;">بوعدك ياساره ❤️ِ</h2>
+                    <ul class="promises-list">
+                        <li>أوعدك أكون جمبك لاخر يوم في عمري يابنتي ❤️.</li>
+                        <li>أوعدك عمري في يوم ما هزعلك مني مهما حصل ❤️.</li>
+                        <li>اوعدك ان هكون جمبك في الوحش قبل الحلو ❤️.</li>
+                        <li>أوعدك ان هكون احسن مما تتوقعي ❤️.</li>
+                        <li>أوعدك ان مش هييجي يوم واحد بس اخليكي تندمي انك ادتيني فرصه ❤️.</li>
+                        <li>اوعدك ان هفضل شايلك في عيني لاخر يوم في عمري ياحبيبتي ❤️.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="quote-section fade-in-section">
+            <div class="container">
+                <blockquote>
+                    "يمكن الدنيا مش دايمًا سهلة بس طول ما إيدك في إيدي… أي طريق يستاهل.❤️"
+                </blockquote>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <div class="container">
+                <h2 class="gold-text fade-in-section" style="text-align: center; margin-bottom: 30px;">ذكرياتنا الحلوة
+                </h2>
+                <div class="gallery-grid fade-in-section">
+                    <div class="gallery-item"><img
+                            src="D:\love you sara\photo\9A35370F-28CC-486E-B903-698AA197E244 2.JPG" alt="Memory 1">
+                    </div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\8FDA0EB1-5316-4139-B4D3-F659952535E9.JPG"
+                            alt="Memory 2"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\0495DC85-E9ED-492D-886C-5089ADC6F213.JPG"
+                            alt="Memory 3"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\793F5E21-1FE4-4AEF-BF15-FDD0FEE29FC8.JPG"
+                            alt="Memory 4"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\671C2E46-72D7-4D3C-8D46-A7850DAAA2D7.JPG"
+                            alt="Memory 4"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\1504A596-CD41-44E0-8AC2-09CD83712731.JPG"
+                            alt="Memory 4"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\photo_2026-01-21_15-11-05.jpg"
+                            alt="Memory 4">
+                    </div>
+                </div>
+            </div>
+            <section class="quote-section fade-in-section">
+                <div class="container">
+                    <blockquote>
+                        "الدنيا من غيرك وحشه اوي انتي احلي حاجه في دنيتي الحمدلله حمدا كثيرا ان ربنا جعلك في حياتي...❤️"
+                    </blockquote>
+                </div>
+            </section>
+        </section>
+        <section id="gallery">
+            <div class="container">
+                <h2 class="gold-text fade-in-section" style="text-align: center; margin-bottom: 30px;">ذكرياتنا الحلوة
+                </h2>
+                <div class="gallery-grid fade-in-section">
+                    <div class="gallery-item"><img src="D:\love you sara\photo\C07D2258-DA3E-4817-BFC9-C58B5710CBFC.JPG"
+                            alt="Memory 2"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\33557330-2791-4773-B30F-A0016DFF06DC.JPG"
+                            alt="Memory 3"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\87449657-4B10-44C5-B303-8B5E62D2F1B5.jpg"
+                            alt="Memory 4"></div>
+                    <div class="gallery-item"><img src="D:\love you sara\photo\AF7FA934-DC68-4BF5-8B03-BD4930DA1AE6.JPG"
+                            alt="Memory 2"></div>
+                </div>
+            </div>
+        </section>
+        <section class="quote-section fade-in-section">
+            <div class="container">
+                <blockquote>
+                    "ربنا يخليكي ليا ياساره وميحرمنيش منك ويجعلك ام عيالي ياسيري...❤️ "
+                </blockquote>
+            </div>
+        </section>
+        <section id="videos">
+            <div class="container">
+                <h2 class="gold-text fade-in-section" style="text-align:center; margin-bottom:30px;">
+                    لحظاتنا المصورة ❤️🎬
+                </h2>
+
+                <div class="video-grid fade-in-section">
+                    <!-- ضع الفيديو 1 هنا -->
+                    <video controls muted loop>
+                        <source
+                            src="https://drive.google.com/file/d/1Acg7XAlyDXKB3jZwokFBRNzM4rNT-7Ld/view?usp=sharing">
+                    </video>
+
+                    <!-- ضع الفيديو 2 هنا -->
+                    <video controls muted loop>
+                        <source src="https://drive.google.com/file/d/1ops7l1enRmhZXBD95QMzSJvgGUVFjrnZ/view?usp=sharing"
+                            type="video/mp4">
+                    </video>
+
+                    <!-- ضع الفيديو 3 هنا -->
+                    <video controls muted loop>
+                        <source
+                            src="https://drive.google.com/file/d/1cbVH8JGtusDz4CUPD5Hxf5VX23BgGZnp/view?usp=sharing">
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <section class="ending fade-in-section">
+            <div class="container">
+                <h2>"لو الزمن رجّعني لأول يوم شوفتك فيه… هختارك تاني بدون تردد❤️."</h2>
+                <p style="font-size: 3rem; margin-top: 20px;">❤️</p>
+                <br>
+                <small style="opacity: 0.5;">الموقع اتعمل بكل حب ليكي ياساره واول مره بعد التعليم الفتره الي فاتت ان
+                    اعملو ليكي لان انتي اهم حاجه عندي ربنا يخليكي ليا❤️ </small>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. إعدادات كلمة السر
+        // قم بتغيير التاريخ هنا حسب رغبتك (YYYY-MM-DD)
+        const SECRET_DATE = "2023-05-09";
+
+        // عناصر DOM
+        const loginGate = document.getElementById('login-gate');
+        const mainContent = document.getElementById('main-content');
+        const passwordInput = document.getElementById('password-input');
+        const errorMsg = document.getElementById('error-msg');
+        const bgMusic = document.getElementById('bg-music');
+
+        // وظيفة التحقق من كلمة السر
+        function checkPassword() {
+            const userDate = passwordInput.value;
+
+            if (userDate === SECRET_DATE) {
+                // كلمة السر صحيحة
+                // 1. إخفاء شاشة الدخول بانسيابية
+                loginGate.style.opacity = '0';
+                loginGate.style.transition = 'opacity 1s ease';
+
+                setTimeout(() => {
+                    loginGate.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+
+                    // تشغيل الموسيقى (يتطلب تفاعل المستخدم أولاً وهو الضغط على الزر)
+                    bgMusic.volume = 0.3; // صوت هادئ
+                    bgMusic.play().catch(e => console.log("Audio play failed due to browser policy:", e));
+
+                }, 1000);
+
+            } else {
+                // كلمة السر خاطئة
+                errorMsg.style.opacity = '1';
+                passwordInput.style.border = '1px solid #ff4d6d';
+                // هزة بسيطة (Animation)
+                const loginBox = document.querySelector('.login-box');
+                loginBox.style.transform = 'translateX(10px)';
+                setTimeout(() => { loginBox.style.transform = 'translateX(-10px)'; }, 100);
+                setTimeout(() => { loginBox.style.transform = 'translateX(0)'; }, 200);
+            }
+        }
+
+        // 2. Scroll Reveal Animation (Intersection Observer)
+        // هذا الكود يظهر العناصر عند التمرير إليها
+        const observerOptions = {
+            threshold: 0.2 // يبدأ الظهور عند رؤية 20% من العنصر
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // observer.unobserve(entry.target); // احذف هذا السطر لو عاوز الأنيميشن يشتغل كل مرة
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // 3. إنشاء قلوب عائمة في الخلفية
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts-container');
+            const heartCount = 15; // عدد القلوب
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+
+                // موقع عشوائي وحجم وتأخير
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 5 + 5 + "s"; // بين 5 و 10 ثواني
+                heart.style.animationDelay = Math.random() * 5 + "s";
+
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // تشغيل القلوب عند التحميل
+        createHearts();
+
+    </script>
+</body>
+
+</html>
